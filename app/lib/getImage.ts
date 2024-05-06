@@ -1,6 +1,6 @@
 import type { ImagesResults } from "../api/Image";
 import { ImagesSchemaWithPhotos } from "../api/Image";
-import env from "./.env";
+import env from "./env";
 
 export default async function fetchImages(url: string): Promise<ImagesResults | undefined> {
   try {
