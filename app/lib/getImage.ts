@@ -1,12 +1,12 @@
-import { throwDeprecation } from "process";
 import type { ImagesResults } from "../api/Image";
 import { ImagesSchemaWithPhotos } from "../api/Image";
+import env from "./.env";
 
 export default async function fetchImages(url: string): Promise<ImagesResults | undefined> {
   try {
     const response = await fetch(url, {
       headers: {
-        Authorization: process.env.PEXELS_API_KEY,
+        Authorization: env.PEXELS_API_KEY,
       },
     });
 
@@ -14,10 +14,12 @@ export default async function fetchImages(url: string): Promise<ImagesResults | 
 
     const imageResult: ImagesResults = await response.json();
     const validatedImages = ImagesSchemaWithPhotos.safeParse(imageResult);
-    if(validatedImages.data?.total_results === 0) throw undefined;
-    return validatedImages;
+
+    if (validatedImages.data?.total_results === 0) return undefined;
+
+    return validatedImages.data;
   } catch (error) {
-    if(e instanceof Error) console.log(e.stack);
-    
+    if (error instanceof Error) console.log(error.stack);
+    return undefined;
   }
 }
