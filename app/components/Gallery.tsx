@@ -1,9 +1,9 @@
+// app/gallery/page.tsx
 'use client'
 import React, { useEffect, useState } from 'react';
 import fetchImages from "../lib/getImage";
 import type { ImagesResults } from "../api/Image";
 import ImageContainer from './ImageContainer';
-
 
 const Gallery = () => {
   const [images, setImages] = useState<ImagesResults | undefined>(undefined);
