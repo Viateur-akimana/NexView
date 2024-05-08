@@ -1,23 +1,18 @@
-import type { ImagesResults } from "../api/Image";
 import { ImagesSchemaWithPhotos } from "../api/Image";
-import env from "./env";
+import type { ImagesResults } from "../api/Image";
 
-export default async function fetchImages(url: string): Promise<ImagesResults | undefined> {
+export default async function fetchImages(): Promise<ImagesResults | undefined> {
   try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: env.PEXELS_API_KEY,
-      },
-    });
+    const response = await fetch('/api/pexels');
 
     if (!response.ok) throw new Error("No image found");
 
     const imageResult: ImagesResults = await response.json();
-    const validatedImages = ImagesSchemaWithPhotos.safeParse(imageResult);
+    const validatedImageResult = ImagesSchemaWithPhotos.safeParse(imageResult);
 
-    if (validatedImages.data?.total_results === 0) return undefined;
+    if (validatedImageResult.data?.total_results === 0) return undefined;
 
-    return validatedImages.data;
+    return validatedImageResult.data;
   } catch (error) {
     if (error instanceof Error) console.log(error.stack);
     return undefined;

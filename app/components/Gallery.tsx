@@ -1,24 +1,21 @@
-// app/gallery/page.tsx
 'use client'
 import React, { useEffect, useState } from 'react';
-import fetchImages from "../lib/getImage";
 import type { ImagesResults } from "../api/Image";
 import ImageContainer from './ImageContainer';
-
+import fetchImages from "../lib/getImage";
 const Gallery = () => {
   const [images, setImages] = useState<ImagesResults | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://www.pexels.com/v1/curated';
-        const fetchedImages = await fetchImages(url);
+        const fetchedImages = await fetchImages();
         setImages(fetchedImages);
       } catch (error) {
         console.error("Error fetching images:", error);
       }
     };
-
+  
     fetchData();
   }, []);
 
